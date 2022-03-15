@@ -67,8 +67,6 @@
 
 ### 分析传统编码方式的不足
 
-#### Spring IoC初体验
-
 举例(代码见s01)
 
 - 妈妈在早餐后给三个孩子分发餐后水果-
@@ -89,8 +87,8 @@ Spring IoC 解释
   - 直观好处是，把原本的代码变为可配置的文本
   - 利用IoC容器让对象与对象之间有效解耦，原始代码通过new固定写死不便，利用IoC后可动态调整
 
-  ### XML管理对象（Bean）
-  三种配置方法
+## Spring XML配置——管理对象（Bean）
+### 三种配置方法
   - 基于XML配置Bean实例化对象
   - 基于注解配置Bean实例化对象
   - 基于Java代码配置Bean实例化对象
@@ -103,14 +101,15 @@ Spring IoC 解释
         <property name="origin" value="欧洲"></property>
         <property name="color" value="红色"></property>
     </bean>
-
+  
   //XML方式创建IoC容器
   //创建IoC容器并根据配置文件创建对象
   //标准代码 ClassPathXmlApplicationContext：加载指定的xml文件初始化IoC容器
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-  `
+  ```
 
-  实例化Bean的三种方法
+## 对象实例化配置  
+### 实例化Bean的三种方法
   - 基于构造方法对象化（90%）
     - 默认构造方法
     - 带参构造方法
@@ -118,8 +117,8 @@ Spring IoC 解释
   - 基于工厂实例方法实例化
 
   ```java
-
-<!-- 实例化方法 基于构造方法对象化 参数名/参数位置-->
+  <!-- applicationContext -->
+  <!-- 实例化方法 基于构造方法对象化 参数名/参数位置-->
   <!-- 利用构造方法参数名实例化 实际更推荐-->
   <bean id="sweetApple" class="com.imooc.spring.ioc.entity.Apple">
         <!-- 没有constructor-arg则代表调用默认构造方法实例化 -->
@@ -127,7 +126,7 @@ Spring IoC 解释
         <property name="origin" value="欧洲"></property>
         <property name="color" value="红色"></property>
     </bean>
-
+  
   <!-- 利用构造方法参数位置实例化 尽量避免-->
   <bean id="sweetApple" class="com.imooc.spring.ioc.entity.Apple">
         <!-- constructor-arg 利用构造方法参数位置实例化 -->
@@ -135,12 +134,12 @@ Spring IoC 解释
         <constructor-arg index="1" value="红色"/>
         <constructor-arg index="2" value="欧洲"/>
     </bean>
-
-<!-- 构造方法 默认构造/带参构造-->
+  
+  <!-- 构造方法 默认构造/带参构造-->
     
   <!--bean标签默认通过默认构造方法创建对象-->
   <bean id="apple1" class="com.imooc.spring.ioc.entity.Apple">
-
+  
   </bean>
   <!--使用带参构造constructor-arg方法实例化对象，使用name进行动态设置-->
   <bean id="apple2" class="com.imooc.spring.ioc.entity.Apple">
@@ -149,7 +148,7 @@ Spring IoC 解释
         <constructor-arg name="origin" value="欧洲"/>
         <constructor-arg name="price" value="19.8"/>
     </bean>
-
+  
   <!--使用带参构造constructor-arg方法实例化对象，使用用索引位置进行设置（尽量避免）-->
   <bean id="apple3" class="com.imooc.spring.ioc.entity.Apple">
       <constructor-arg index="0" value="红富士"/>
@@ -157,10 +156,13 @@ Spring IoC 解释
       <constructor-arg index="2" value="欧洲"/>
       <constructor-arg index="3" value="19.8"/>
   </bean>
-  `
+  ```
 
-  ```java
-      /**
+  两种工厂本质一样，都是通过封装对应的方法，隐藏创建对象的细节
+  最大的不同是 是否在创建对象方法上加static
+
+    ```java
+          /**
     * 静态工厂通过静态方法创建对象，隐藏创建对象的细节
     优点：可以将当前方法执行日志打印输出 logger.info("")
     */
@@ -174,4 +176,80 @@ Spring IoC 解释
             return apple;
         }
     }
-  `
+    ```
+
+    <!--利用静态工厂获取对象-->
+    <bean id="apple4" class="com.imooc.spring.ioc.factory.AppleStaticFactory"
+          factory-method="createSweetApple"/>
+    
+    /*
+    * 工厂实例方法创建对象是指IoC容器对工厂类进行实例化并调用对应的实例方法创建对象的过程
+    * */
+    public class AppleFactoryInstance {
+        public Apple createSweetApple(){
+            //logger.info("将当前方法日志打印输出")
+            Apple apple = new Apple();
+            apple.setTitle("红富士");
+            apple.setOrigin("欧洲");
+            apple.setColor("红色");
+            return apple;
+        }
+    
+    }
+    
+    <!--利用工厂实例方法获取对象-->
+    <!--在IoC容器初始化过程中，首先对工厂进行实例化-->
+    <bean id="factoryInstance" class="com.imooc.spring.ioc.factory.AppleFactoryInstance"/>
+    <!--利用工厂的createSweetApple方法获取对象，这里配置项变成了factory-bean，
+    factory-bean将工厂实例放入，同时仍然使用factory-method指向createSweetApple-->
+    <bean id="apple5" factory-bean="factoryInstance" factory-method="createSweetApple"/>
+    
+    ```
+
+### 从IoC容器获取bean
+    ```java
+    //方法一(建议)：sweetApple就是个标签，Apple.class是其类型
+    Apple sweetApple = context.getBean("sweetApple",Apple.class);
+    //方法二：强制转换
+    Apple sweetApple = (Apple)context.getBean("sweetApple");
+    ```
+
+- id和name属性相同点
+  - bean id与name都是设置对象在IoC容器中唯一标识
+  - 两者在同一个配置文件中斗不允许出现重复
+  - 两者允许在多个配置文件中出现重复，新对象覆盖旧对象
+- id与name区别
+  - id要求更为严格，一次只能定义一个对象标识（推荐）
+  - name更为宽松，一次允许定义多个对象标识
+  - tips：id与name的命名要求有意义，按驼峰命名书写
+- 没有id和name的情况下，bean默认使用类名全称作为bean标识 
+
+  ```java
+    <!-- applicationContext1 -->
+    <bean id="apple2" class="com.imooc.spring.ioc.entity.Apple">
+    <!--name可以设置多个标识，而id只能设置一个，绝大多数只用一个情况，优先用id-->
+    <bean name="apple2,apple7" class="com.imooc.spring.ioc.entity.Apple">
+  
+    <!-- SpringApplication -->
+    Apple apple2 = context.getBean("apple2",Apple.class);
+    System.out.println(apple2.getTitle());
+    Apple apple7 = context.getBean("apple7",Apple.class);
+    System.out.println(apple2.getTitle());
+    
+    <!-- 没有id和name的情况下，bean默认使用类名全称作为bean标识(比较少见)  -->
+    <!-- applicationContext1 -->
+    <bean class="com.imooc.spring.ioc.entity.Apple">
+        <constructor-arg name="title" value="红富士3号"/>
+        <constructor-arg name="color" value="红色"/>
+        <constructor-arg name="origin" value="欧洲"/>
+        <constructor-arg name="price" value="29.8"/>
+    </bean>
+  
+    <!-- SpringApplication -->
+    Apple apple = context.getBean("com.imooc.spring.ioc.entity.Apple",Apple.class);
+    System.out.println(apple.getTitle());
+  ```
+
+  ## 依赖注入配置
+  ## 注解与Java Config
+  ## Spring 单元测试
