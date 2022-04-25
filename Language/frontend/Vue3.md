@@ -66,6 +66,7 @@
         </script>
     ```
     - v-bind:用来绑定元素的属性Attr
+        用于创建单向绑定。 因此，用户在窗体中所做的任何更改都不会存储在状态中。
     ```TS
     //方法一
     <script setup lang="ts">
@@ -81,10 +82,52 @@
 
     <template>
         <div v-bind:style="style1">
-        我是233
+        我是style类型生成的style1
         </div>
     </template>
 
     //方法二
+    <template>
+    <div :style="style">2222</div>
+    </template>  
+    <script setup lang="ts">
     
+    
+    type Style = {
+    height: string,
+    color: string
+    }
+    
+    const style: Style = {
+    height: "300px",
+    color: "blue"
+    }
+    
+    </script>
+    
+    
+    <style>
+    </style>
     ```
+    - v-for:循环
+    ```TS
+    <script setup lang="ts">
+
+    const Arr: Array<number> = [1, 2, 3, 4, 5]
+    const Arr1:Array<any> = [{name:'one'},{name:'two'},{name:'three'}]
+
+    </script>
+    <template>
+        <div :key="item" v-for="item in Arr">{{ item }}
+        </div>
+
+        <div :key="item" v-for="item in Arr1">{{item.name}}
+        </div>
+    </template>
+
+    <style lang="less">
+    </style>
+    ```
+    - v-model
+    `v-model` 指令在 HTML 控件和关联的数据之间创建双向绑定。 因此，当窗体中的值更新时，应用程序状态中的值也会更新。 `v-model` 指令支持绑定到任何窗体控件，包括复选框、文本框和下拉列表。
+    ![20220416214323](https://s2.loli.net/2022/04/16/Rjv65cFTx4mzPEh.png)
