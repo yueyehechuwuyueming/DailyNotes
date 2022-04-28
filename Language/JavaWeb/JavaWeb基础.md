@@ -852,8 +852,6 @@ public class PlanReader {
    - servlet-class
 3. ![image-20220428090628616](https://s2.loli.net/2022/04/28/DBJcyPoTV8qKpAt.png)
    - B
-4. 自由编程：使用Servlet在页面输出商品类别名称，商品类别名称通过url地址进行传递，在Servlet中获取类别名称并输出。url地址如下：`localhost:8080/ServletProj/ShopServlet?category=book`
-   - 见项目ServletProj
 
 ### 标准的Java Web工程
 
@@ -870,14 +868,14 @@ public class PlanReader {
 
 ### Sevlet开发步骤
 
-- 创建Servlet类，继承HttpServlet
+- 创建Servlet类，继承**HttpServlet**
 - 重写service方法，编写程序代码
-- 配置web.xml，绑定url
+- 配置web.xml，绑定url（`<url-pattern>`）
 
 ### Servlet访问方法
 
 - `http://IP地址:端口/context-path/url-mapping`
-- 远程访问使用IP地址，本地访问localhost(127.0.0.1)
+- 远程访问使用IP地址，本地访问**localhost(127.0.0.1)**
 - context-path成为“上下文路径”，默认为工程名
 
 ### 请求参数
@@ -891,7 +889,7 @@ public class PlanReader {
 ### Servlet接受请求参数
 
 - request.getParameter() - 接收单个参数
--  request.getParameterValues() - 接收多个同名参数
+-  request.getParameterValues() - 接收多个**同名参数**
 
 ```java
 // 1. 创建Servlet类，继承HttpServlet
@@ -934,6 +932,15 @@ public class SampleServlet extends HttpServlet {
     - 用户登录 
     - 用户注册 
     - 更新公司账目
+- 习题
+  - Get和Post请求会经过service()方法进行转发，无论service()方法是否重写
+    - ×，可以不经过service，经过doGet()和doPost()
+  - Post请求提交的数据，可以在浏览器调试页面的Form Data中查看
+    - √
+  - Get请求提交的数据，可以在浏览器调试页面的Query String Parameters中查看
+    - √
+  - Get提交的数据不能在url地址中查看
+    - 错，get提交的可以，post的不行
 
 ```java
 // RequestMethodServlet.java
@@ -1021,8 +1028,17 @@ public class FirstServlet extends HttpServlet{
 ### 使用注解简化配置
 
 - Servlet 3.x 之后引入了“注解Annotation”特性
-- 注解用于简化Web应用程序的配置过程
+- 注解用于**简化**Web应用程序的配置过程
 - Servlet核心注解：@WebServlet
+- 习题
+  - 使用注解配置了Servlet，web.xml中也可以再同样的配置一遍
+    - ×，报错，Server Tomcat v9.0 Server at localhost failed to start
+  - 使用注解配置了Servlet后，还可以使用web.xml再配置另一个url-pattern的值，不和注解配置的重名就行
+    - √，经测试两个url都可以运行
+  - 配置Servlet的注解的正确写法是@Servlet("/imooc")
+    - ？
+  - 配置Servlet注解中的参数指的是Servlet的映射地址
+    - ？
 
 ```xml
 <!-- @WebServlet("/anno")等同于以下配置文件，在该类上@即可 -->
@@ -1046,7 +1062,7 @@ public class FirstServlet extends HttpServlet{
 ```xml
 <!-- //urlPatterns="/unused"用不到，但得有 --> 
 <!-- @WebServlet(urlPatterns="/unused",loadOnStartup=2)等于以下配置 --> 
-<!-- 按照<load-on-startup>中0，1，2的顺序启动jia --> 
+<!-- 按照<load-on-startup>中0，1，2的顺序启动加载 --> 
   <servlet>
 	  <servlet-name>analysis</servlet-name>
  	  <servlet-class>com.cy.servlet.AnalysisServlet</servlet-class>
@@ -1054,3 +1070,30 @@ public class FirstServlet extends HttpServlet{
    </servlet> 
 ```
 
+## 自由编程
+
+### 1.Servlet传参
+
+使用Servlet在页面输出商品类别名称，商品类别名称通过url地址进行传递，在Servlet中获取类别名称并输出。url地址如下：`localhost:8080/ServletProj/ShopServlet?category=book`
+
+- 见项目ServletProj
+
+### 2.
+
+使用Servlet计算n以内自然数的累加和，并输出，参数n通过url地址传递
+
+![image-20220428223127251](https://s2.loli.net/2022/04/28/6DnU9OKYCQjm425.png)
+
+提示：在Servlet中获取的参数是字符串类型，需要使用Integer.parselnt(String s)方法转换为整型再进行计算。
+
+### 3.
+
+- 使用Servlet完成加法计算器：
+
+  1. 创建一个html页面，定义一个表单，点击计算按钮，提交给Servleti进行处理
+
+  2. 将表单数据传递给Servlet，并将计算结果打印输出在页面上.
+
+     运行效果参见下图：
+
+![image-20220428223229818](https://s2.loli.net/2022/04/28/alunYC9mEBdrSAH.png)
