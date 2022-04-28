@@ -826,3 +826,231 @@ public class PlanReader {
 ![image-20220427215954022](https://s2.loli.net/2022/04/27/3iWnPMDle9Uhguz.png)
 
 ### Tomcat安装（略)
+
+## Servlet开发
+
+### 第一个Servlet （见eclipse）
+
+#### 图解执行流程
+
+1. 在浏览器输入`http://localhost:8080/FirstServlet/hi?name=jackson`，该信息通过request发送给Tomcat
+2. Tomcat收到信息后
+   1. 发送的url是`/hi`,从web.xml配置文件寻找是否有匹配的servlet（url-pattern是否有`/hi`这一项）
+   2. 有匹配的url-pattern,映射（mapping）的servlet-name是first
+   3. 再次在servlet里寻找是否有first的servlet-name对应的servlet-class
+   4. 有匹配的servlet-class，servlet-name是`servlet-class：com.cy.servlet.FirstServlet`对应的别名
+3. Tomcat创建service()类对象，并且执行FirstServlet方法，service()类对象就是为FirstServlet方法提供响应支持的
+4. FirstServlet打印输出`<h1 style='color:red'>hi," + name + "</h1><hr/>`（name作为参数进行接收），Tomcat将该字符串原封不动给地发送给浏览器（response）
+5. 浏览器接收到字符串后，对其进行解释，展现在页面上
+
+![image-20220428082909411](https://s2.loli.net/2022/04/28/OmtTzHMxLJCkvR7.png)
+
+#### 习题
+
+1. 当普通类继承（HttpServlet）就会变为Servlet类
+2. ![image-20220428090526098](https://s2.loli.net/2022/04/28/NRfuVGiU1JYg97D.png)
+   - servlet-class
+3. ![image-20220428090628616](https://s2.loli.net/2022/04/28/DBJcyPoTV8qKpAt.png)
+   - B
+4. 自由编程：使用Servlet在页面输出商品类别名称，商品类别名称通过url地址进行传递，在Servlet中获取类别名称并输出。url地址如下：`localhost:8080/ServletProj/ShopServlet?category=book`
+   - 见项目ServletProj
+
+### 标准的Java Web工程
+
+- ![image-20220428142824352](https://s2.loli.net/2022/04/28/BJDI9nZQ4uLAfkr.png)
+- 在WebContent文件夹下创建html/jsp文件，即可在网页端显示
+  - ![image-20220428150437847](https://s2.loli.net/2022/04/28/JtS7BTkQDsEeu6Z.png)
+- 习题
+  - 关于Java Web工程结构，以下说法错误的是？（选择一项）
+  - A web.xml文件存放到/WEB-INF/lib目录下
+    - ×，存放到WEB-INF目录下，lib下存放web应用依赖的jar包
+  - B /WEB-INF是WEB应用的安全目录
+  - C web.xml是部署描述符文件
+  - D /WEB-INF/classes用于存放编译后的字节码文件
+
+### Sevlet开发步骤
+
+- 创建Servlet类，继承HttpServlet
+- 重写service方法，编写程序代码
+- 配置web.xml，绑定url
+
+### Servlet访问方法
+
+- `http://IP地址:端口/context-path/url-mapping`
+- 远程访问使用IP地址，本地访问localhost(127.0.0.1)
+- context-path成为“上下文路径”，默认为工程名
+
+### 请求参数
+
+- 请求参数是指浏览器通过请求向Tomcat提交的数据 
+- 请求参数通常是用户输入的数据，待Servlet进行处理 
+- 举例：student.xml
+  - ![image-20220428164852122](https://s2.loli.net/2022/04/28/djc87DnkbtJHZ9u.png)
+  - ![image-20220428164836954](https://s2.loli.net/2022/04/28/MYj3utf5ZporTcC.png)
+
+### Servlet接受请求参数
+
+- request.getParameter() - 接收单个参数
+-  request.getParameterValues() - 接收多个同名参数
+
+```java
+// 1. 创建Servlet类，继承HttpServlet
+public class SampleServlet extends HttpServlet {
+	//2. 重写service方法，编写程序代码 
+	public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String name = request.getParameter("name");
+		String mobile = request.getParameter("mobile");
+		String sex = request.getParameter("sex");
+		String[] specs = request.getParameterValues("spec");
+		PrintWriter out = response.getWriter();//向浏览器输出的数据流
+		out.println("<h1>name:" + name + "</h1>");
+		out.println("<h1>mobile:" + mobile + "</h1>");
+		out.println("<h1>sex:" + sex + "</h1>");
+		for(int i=0; i<specs.length; i++) {
+			out.println("<h2>spec:" + specs[i] + "</h2>");
+		}
+		out.println("<a href='http://www.baidu.com'>Baidu</a>");
+	}
+}
+```
+
+### Get与Post请求方法
+
+- Get方式是将数据通过在URL附加数据显性向服务器发送数据。（默认采用）
+  - `http://localhost:8080/FirstServlet/sample?name=zhangsan`
+  - `method="get"`:会在地址栏显示出请求参数
+- Post方式会将数据存放在”请求体”中隐性向服务器发送数据
+  - `http://localhost:8080/FirstServlet/sample`
+  - `method="post"`:地址栏请求参数隐藏
+  - 请求体：name=zhangsan
+- Get与Post处理方式
+  - 所有请求-service()方法
+  - Get请求-doGet()方法
+  - Post请求-doPost()方法
+- Get与Post应用场景
+  - Get常用于不包含敏感信息的查询功能
+    - 例如:`https://www.baidu.com/s?wd=imooc&rsv_spt=1`
+  - Post用于安全性要求较高的功能或者服务器的”写“操作
+    - 用户登录 
+    - 用户注册 
+    - 更新公司账目
+
+```java
+// RequestMethodServlet.java
+package com.cy.servlet;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class RequestMethodServlet extends HttpServlet{
+	//处理get请求
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String name = request.getParameter("name");
+		response.getWriter().println("<h1 style='color:green'>" + name + "</h1>");
+	}
+	//处理post请求
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String name = request.getParameter("name");
+		response.getWriter().println("<h1 style='color:red'>" +  name + "</h1>");
+	}
+}
+```
+
+### Servlet生命周期
+
+1. 装载——web.xml
+
+2. 创建——构造函数
+
+3. 初始化——init()
+
+4. 提供服务——service()
+
+5. 销毁——destroy()
+
+   ![image-20220428210918586](https://s2.loli.net/2022/04/28/QRgq3LlSWB8DhfP.png)
+
+   - 刷新界面，创建+初始化+提供服务
+   - debug中进行界面修改，销毁
+
+```java
+package com.cy.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class FirstServlet extends HttpServlet{
+
+	public FirstServlet() {
+		System.out.println("正在创建FirstServlet对象");
+	}
+		
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		System.out.println("正在初始化FirstServlet对象");
+	}
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//接受请求来的参数
+		String name = request.getParameter("name");
+		String html = "<h1 style='color:red'>hi," + name + "</h1><hr/>";
+		System.out.println("返回给浏览器的相应数据为：" + html);
+		PrintWriter out = response.getWriter();
+		out.println(html);//将html发送回浏览器
+	}
+	
+	@Override
+	public void destroy() {
+		System.out.println("正在销毁servlet对象"); 
+	}
+}
+```
+
+## 注解简化设置
+
+### 使用注解简化配置
+
+- Servlet 3.x 之后引入了“注解Annotation”特性
+- 注解用于简化Web应用程序的配置过程
+- Servlet核心注解：@WebServlet
+
+```xml
+<!-- @WebServlet("/anno")等同于以下配置文件，在该类上@即可 -->
+  <servlet>
+  	<servlet-name>annotation</servlet-name>
+	<servlet-class>com.cy.servlet.AnnotationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>annotation</servlet-name>
+  	<url-pattern>/anno</url-pattern>
+  </servlet-mapping>
+</web-app>
+```
+
+### 启动时加载Servlet
+
+- web.xml使用`<load-on-startup>`设置启动加载
+- `<load-on-startup>0~9999</load-on-startup>`
+- 启动时加载在工作中常用于系统的预处理
+
+```xml
+<!-- //urlPatterns="/unused"用不到，但得有 --> 
+<!-- @WebServlet(urlPatterns="/unused",loadOnStartup=2)等于以下配置 --> 
+<!-- 按照<load-on-startup>中0，1，2的顺序启动jia --> 
+  <servlet>
+	  <servlet-name>analysis</servlet-name>
+ 	  <servlet-class>com.cy.servlet.AnalysisServlet</servlet-class>
+ 	  <load-on-startup>2</load-on-startup>
+   </servlet> 
+```
+
