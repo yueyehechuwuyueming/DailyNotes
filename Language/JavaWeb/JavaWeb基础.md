@@ -1078,7 +1078,7 @@ public class FirstServlet extends HttpServlet{
 
 - 见项目ServletProj
 
-### 2.
+### 2.Servlet传参2
 
 使用Servlet计算n以内自然数的累加和，并输出，参数n通过url地址传递
 
@@ -1086,7 +1086,7 @@ public class FirstServlet extends HttpServlet{
 
 提示：在Servlet中获取的参数是字符串类型，需要使用Integer.parselnt(String s)方法转换为整型再进行计算。
 
-### 3.
+### 3.创建页面提交servlet处理
 
 - 使用Servlet完成加法计算器：
 
@@ -1097,3 +1097,206 @@ public class FirstServlet extends HttpServlet{
      运行效果参见下图：
 
 ![image-20220428223229818](https://s2.loli.net/2022/04/28/alunYC9mEBdrSAH.png)
+
+# JSP入门
+
+- 了解JSP的用途
+- 了解jsp执行原理
+- 掌握JSP基本语法
+
+## JSP介绍
+
+### Sevlet缺点
+
+- 静态HTML与动态Java代码混合在一起，难以维护
+- Servlet利用out.println()语句输出，开发效率低下
+- Eclipse很难再开发过程中发现错误，调试困难
+
+### JSP介绍
+
+- JSP全称是（**Java Server Page**），Java服务器页面
+-  JSP是J2EE的功能模块，由Web服务器执行
+- JSP的作用就是降低动态网页开发难度
+
+### JSP特点
+
+- JSP使用简单，短时间学习便可上手使用
+- JSP可将Java代码与HTML分离，降低开发难度
+- JSP的本质就是Servlet
+
+### JSP的运行要求
+
+- 可正常运行的Tomcat
+-  所有JSP页面扩展名必须是 .jsp
+- JSP页面应放在Web应用程序目录下
+
+### JSP的执行过程
+
+![image-20220429162419138](https://s2.loli.net/2022/04/29/cXDBtZ9mTaIrEze.png)
+
+### JSP的转译过程
+
+- ![image-20220429162619959](https://s2.loli.net/2022/04/29/SnAtRyVYWw6xIgh.png)
+- 习题
+  - admin.jsp文件被web服务器接收以后最终会转换为（admin_jsp.class ）
+
+### JSP的基本语法（按功能分类）
+
+- JSP代码块
+  - JSP代码块用于在JSP中嵌入Java代码
+  - JSP代码块语法：`<% java代码%>`
+  - 例如：`% System.out.println("Hello World!");%`
+- JSP声明构造块
+  - JSP声明构造块用于声明变量或方法
+  - JSP声明构造块语法：`<%!声明语句%>`
+  - JSP声明构造块语法：`%!(int a,int b){return a+b;}%`
+- JSP输出指令
+  - JSP输出指令用于在JSP页面中显示Java代码执行结果
+  - JSP输出指令语法：`<%=java代码%>`
+  - 例如:`<%= "<b>"+name + "</b>%>"`
+  - 注：“%=”是out.println的简化形式
+- JSP处理指令
+  - JSP处理指令用于提供JSP执行过程中的辅助信息
+  - JSP处理指令语法：`<%@ jsp指令 %>`
+  - 例如：`<%@page import="java.util." %`
+  - 常用处理指令
+    - `<%@ page %> `定义当前JSP页面全局设置
+    - `<%@ include %> `将其他JSP页面与当前JSP页面合并
+    - `<%@ taglib %>` 引入JSP标签库
+  - 习题
+    - 以下关于jsp的表达式，书写正确的是（）（选择两项）
+      - `<%= this.getName() %>`
+        - √
+      - `<%= this.getPassword(); %>`
+        - ×，没有，`<%= %>`里只加要输出的对象，而不是语句
+      - `<% String a= "abc" %>`
+        - ×，没有；，不是完整的语句
+      - `<%! String b= "pass"; %>`
+        - √
+    - 
+    - 
+
+| JSP基本语法（功能分类） | 语法             | 举例                                     |
+| ----------------------- | ---------------- | ---------------------------------------- |
+| 代码块                  | `<% java代码%>`  | `% System.out.println("Hello World!");%` |
+| 声明构造块              | `<%!声明语句%>`  | `%!(int a,int b){return a+b;}%`          |
+| 输出指令                | `<%=java代码%>`  | `<%= "<b>"+name + "</b>%>"`              |
+| 处理指令                | `<%@ jsp指令 %>` | `<%@page import="java.util." %`          |
+
+### JSP中注释的区别
+
+- `<% -- 注释 -- %>`:JSP注释，被注释语句不做任何处理
+- // 、/*..*/ 用于注释<%%>java代码，被注释代码不执行
+- ` <!-- html -->`HTML注释，被注释的语句仍会被执行，不会被浏览器解释
+
+### 综合训练：质数算法
+
+- 列出1000内的质数
+- 要求1：使用List保存所有有效的质数
+- 要求2：将结果打印到页面，格式为`<h1>X是质数</h1>`
+
+### JSP页面重用
+
+```jsp
+<-- video.jsp  -->
+<-- 把文字格式改为utf-8，使得中文显示不为乱码  -->
+<%@page contentType="text/html; charset=utf-8" %>
+<-- 引用header.jsp和footer.jsp，使之能进行页面服用  -->
+<%@include file="include/header.jsp" %>
+<%@include file="include/footer.jsp" %>
+```
+
+## 自由编程
+
+### JSP界面
+
+请在JSP页面中完成1-100内数字的求和运算，并将结果在浏览器中显示出来。
+
+参考分析思路：
+
+1. 在程序脚本标签<% %>书写求和代码。
+
+2. 利用out.println完成计算结果的输出。
+
+![image-20220429230150886](https://s2.loli.net/2022/04/29/IFYMXKlBWGrZoN3.png)
+
+```jsp
+<%
+	int sum=0;
+	for(int i=1;i<=100;i++){
+		sum+=i;
+	}
+	out.println("sum:"+sum);
+%>
+```
+
+
+
+### JSP界面+设置
+
+请在JSP页面中根据x的值进行判断并得出y的值，并将结果在浏览器中显示出来
+
+![image-20220429230812589](https://s2.loli.net/2022/04/29/hPzFVqrIQNuolSD.png)
+
+参考分析思路： 
+
+1. 定义整型变量x并初始化为-5 
+
+2. 定义整型变量y并初始化0 
+
+3. 根据所给条件，使用多重if-else结构求y的值 
+
+4. 输出x和y的值 
+
+5. **使用div标签的style属性对输出结果进行居中处理** 
+
+6. 实现每一句的换行操作。
+
+注意：路径应该是自己的项目路径。 页面首先应该设置pageEncoding 。运行效果参见下图：
+
+![image-20220429230846144](https://s2.loli.net/2022/04/29/FJR538WMjZBwae2.png)
+
+```jsp
+<%@page contentType="text/html; charset=utf-8" %>
+<%
+	int x=-5,y=0;
+	if(x<0){
+		y=-1;
+%>	
+		<h1 style="text-align:center">当x<0,输出</h1>
+<%	
+	}else if(x==0){
+		y=0;
+%>
+		<h1 style="text-align:center">当x=0,输出</h1>
+<%
+	}else{
+		y=1;
+%>
+		<h1 style="text-align:center">当x>0,输出</h1>
+<%
+	}
+%>	
+	<h1 style="text-align:center">x=<%=x%></h1>
+	<h1 style="text-align:center">y=<%=y%></h1>
+```
+
+
+
+### jsp题目3
+
+页面效果展示图：使用List存储数据，并取出显示到页面。
+
+![image-20220429231043722](https://s2.loli.net/2022/04/29/cWd9xIVpLQHTjhK.png)
+
+参考分析思路： 
+
+1. 导入java.util.List和java.util.ArrayList包； 
+
+2. 在List中添加多条字符串数据； 
+
+3. 将List内的数据遍历取出，并打印到页面上。 
+
+4. 数据分行显示，同时注意前面的标号。 
+
+注意：访问地址目录不做要求，字符串的具体内容不做要求。
