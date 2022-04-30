@@ -1295,8 +1295,28 @@ public class FirstServlet extends HttpServlet{
 
 2. 在List中添加多条字符串数据； 
 
-3. 将List内的数据遍历取出，并打印到页面上。 
+3. 将List内的数据遍历取出，并打印到页面上；
 
 4. 数据分行显示，同时注意前面的标号。 
 
 注意：访问地址目录不做要求，字符串的具体内容不做要求。
+
+```jsp
+<%@page import="java.util.List,java.util.ArrayList" contentType="text/html; charset=utf-8" %>
+<%
+	List<String> datas=new ArrayList<String>();
+	datas.add("JSP基础入门");
+	datas.add("Sevlet视频详解");
+	datas.add("EL表达式初识");
+	datas.add("JSTL标签库初识");
+%>
+
+<%
+	for(int i=0;i<datas.size();i++){  
+%>
+	<h1 style="color:red">第<%=i+1%>条:<%=datas.get(i) %></h1>
+<%		
+	}
+%>
+```
+
