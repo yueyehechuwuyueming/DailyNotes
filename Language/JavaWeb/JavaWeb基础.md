@@ -762,9 +762,9 @@ public class PlanReader {
 
 # Serlet入门
 
-## Serlet介绍
+## 1 Serlet介绍
 
-### 软件结构发展史
+### 1.1 软件结构发展史
 
 - 单机时代—桌面应用
   - 桌面应用俗称单机应用，软件所有数据都保存在电脑本地硬盘中
@@ -779,18 +779,18 @@ public class PlanReader {
   - 优点：开发简单，**无需安装客户端**，**数据易于共享**
   - 缺点：相较于C/S模式，执行速度与用户体验相对较弱
 
-### B/S模式执行流程
+### 1.2 B/S模式执行流程
 
 ![image-20220427214156145](https://s2.loli.net/2022/04/27/iYJx3Xse6DuK5ht.png)
 
 ![image-20220427214329415](https://s2.loli.net/2022/04/27/eYVJlUFKdZi8RDM.png)
 
-### 请求与相应
+### 1.3 请求与相应
 
 - 从浏览器发出送给服务器的数据包称为”请求“
 - 从服务器返回给浏览器称为“响应”
 
-### J2EE
+### 1.4 J2EE
 
 - 概念
 
@@ -805,31 +805,31 @@ public class PlanReader {
 
   - ![image-20220427214746006](https://s2.loli.net/2022/04/27/EFi6wDMKHn21qXJ.png)
 
-### Apach Tomcat
+### 1.5 Apach Tomcat
 
 - Tomcat是Apache软件基金会旗下一款免费的开放源代码的Web应用服务器程序
 - Tomcat是运行Servlet（服务器小程序）的容器
 
-### J2EE与Tomcat的关系
+### 1.6 J2EE与Tomcat的关系
 
 - J2EE是一组技术规范和指南，具体实现由软件厂商决定
 - Tomcat是J2EE Web（Servlet和JSP）标准的实现者
 - J2SE是J2EE运行的基石，运行Tomcat离不开J2SE
 
-### Servlet
+### 1.7 Servlet
 
 - Servlet（Server Applet）服务器小程序，主要功能用于生成动态Web内容
 - Servlet是2EE最重要的组成部分，也是我们学习的重点
 
-### Tomcat与Servlet的关系
+### 1.8 Tomcat与Servlet的关系
 
 ![image-20220427215954022](https://s2.loli.net/2022/04/27/3iWnPMDle9Uhguz.png)
 
-### Tomcat安装（略)
+### 1.8 Tomcat安装（略)
 
-## Servlet开发
+## 2 Servlet开发
 
-### 第一个Servlet （见eclipse）
+### 2.1 第一个Servlet （见eclipse）
 
 #### 图解执行流程
 
@@ -853,7 +853,7 @@ public class PlanReader {
 3. ![image-20220428090628616](https://s2.loli.net/2022/04/28/DBJcyPoTV8qKpAt.png)
    - B
 
-### 标准的Java Web工程
+### 2.2 标准的Java Web工程
 
 - ![image-20220428142824352](https://s2.loli.net/2022/04/28/BJDI9nZQ4uLAfkr.png)
 - 在WebContent文件夹下创建html/jsp文件，即可在网页端显示
@@ -866,19 +866,19 @@ public class PlanReader {
   - C web.xml是部署描述符文件
   - D /WEB-INF/classes用于存放编译后的字节码文件
 
-### Sevlet开发步骤
+### 2.3 Sevlet开发步骤
 
 - 创建Servlet类，继承**HttpServlet**
 - 重写service方法，编写程序代码
 - 配置web.xml，绑定url（`<url-pattern>`）
 
-### Servlet访问方法
+### 2.4 Servlet访问方法
 
 - `http://IP地址:端口/context-path/url-mapping`
 - 远程访问使用IP地址，本地访问**localhost(127.0.0.1)**
 - context-path成为“上下文路径”，默认为工程名
 
-### 请求参数
+### 2.5 请求参数
 
 - 请求参数是指浏览器通过请求向Tomcat提交的数据 
 - 请求参数通常是用户输入的数据，待Servlet进行处理 
@@ -886,7 +886,7 @@ public class PlanReader {
   - ![image-20220428164852122](https://s2.loli.net/2022/04/28/djc87DnkbtJHZ9u.png)
   - ![image-20220428164836954](https://s2.loli.net/2022/04/28/MYj3utf5ZporTcC.png)
 
-### Servlet接受请求参数
+### 2.6 Servlet接受请求参数
 
 - request.getParameter() - 接收单个参数
 -  request.getParameterValues() - 接收多个**同名参数**
@@ -912,7 +912,7 @@ public class SampleServlet extends HttpServlet {
 }
 ```
 
-### Get与Post请求方法
+### 2.7 Get与Post请求方法
 
 - Get方式是将数据通过在URL附加数据显性向服务器发送数据。（默认采用）
   - `http://localhost:8080/FirstServlet/sample?name=zhangsan`
@@ -966,7 +966,7 @@ public class RequestMethodServlet extends HttpServlet{
 }
 ```
 
-### Servlet生命周期
+### 2.8 Servlet生命周期
 
 1. 装载——web.xml
 
@@ -1023,9 +1023,9 @@ public class FirstServlet extends HttpServlet{
 }
 ```
 
-## 注解简化设置
+## 3 注解简化设置
 
-### 使用注解简化配置
+### 3.1 使用注解简化配置
 
 - Servlet 3.x 之后引入了“注解Annotation”特性
 - 注解用于**简化**Web应用程序的配置过程
@@ -1053,7 +1053,7 @@ public class FirstServlet extends HttpServlet{
 </web-app>
 ```
 
-### 启动时加载Servlet
+### 3.2 启动时加载Servlet
 
 - web.xml使用`<load-on-startup>`设置启动加载
 - `<load-on-startup>0~9999</load-on-startup>`
@@ -1070,15 +1070,15 @@ public class FirstServlet extends HttpServlet{
    </servlet> 
 ```
 
-## 自由编程
+## 4 自由编程
 
-### 1.Servlet传参
+### 4.1 Servlet传参
 
 使用Servlet在页面输出商品类别名称，商品类别名称通过url地址进行传递，在Servlet中获取类别名称并输出。url地址如下：`localhost:8080/ServletProj/ShopServlet?category=book`
 
 - 见项目ServletProj
 
-### 2.Servlet传参2
+### 4.2 Servlet传参2
 
 使用Servlet计算n以内自然数的累加和，并输出，参数n通过url地址传递
 
@@ -1086,7 +1086,7 @@ public class FirstServlet extends HttpServlet{
 
 提示：在Servlet中获取的参数是字符串类型，需要使用Integer.parselnt(String s)方法转换为整型再进行计算。
 
-### 3.创建页面提交servlet处理
+### 4.3 创建页面提交servlet处理
 
 - 使用Servlet完成加法计算器：
 
@@ -1104,43 +1104,45 @@ public class FirstServlet extends HttpServlet{
 - 了解jsp执行原理
 - 掌握JSP基本语法
 
-## JSP介绍
+## 1 JSP介绍
 
-### Sevlet缺点
+### 1.1 Sevlet缺点
 
 - 静态HTML与动态Java代码混合在一起，难以维护
 - Servlet利用out.println()语句输出，开发效率低下
 - Eclipse很难再开发过程中发现错误，调试困难
 
-### JSP介绍
+### 1.2 JSP介绍
 
 - JSP全称是（**Java Server Page**），Java服务器页面
 -  JSP是J2EE的功能模块，由Web服务器执行
 - JSP的作用就是降低动态网页开发难度
 
-### JSP特点
+### 1.3 JSP特点
 
 - JSP使用简单，短时间学习便可上手使用
 - JSP可将Java代码与HTML分离，降低开发难度
 - JSP的本质就是Servlet
 
-### JSP的运行要求
+### 1.4 JSP的运行要求
 
 - 可正常运行的Tomcat
 -  所有JSP页面扩展名必须是 .jsp
 - JSP页面应放在Web应用程序目录下
 
-### JSP的执行过程
+### 1.5 JSP的执行过程
 
 ![image-20220429162419138](https://s2.loli.net/2022/04/29/cXDBtZ9mTaIrEze.png)
 
-### JSP的转译过程
+### 1.6 JSP的转译过程
 
 - ![image-20220429162619959](https://s2.loli.net/2022/04/29/SnAtRyVYWw6xIgh.png)
 - 习题
   - admin.jsp文件被web服务器接收以后最终会转换为（admin_jsp.class ）
 
-### JSP的基本语法（按功能分类）
+## 2 JSP语法
+
+### 2.1 JSP的基本语法（按功能分类）
 
 - JSP代码块
   - JSP代码块用于在JSP中嵌入Java代码
@@ -1183,19 +1185,19 @@ public class FirstServlet extends HttpServlet{
 | 输出指令                | `<%=java代码%>`  | `<%= "<b>"+name + "</b>%>"`              |
 | 处理指令                | `<%@ jsp指令 %>` | `<%@page import="java.util." %`          |
 
-### JSP中注释的区别
+### 2.2 JSP中注释的区别
 
 - `<% -- 注释 -- %>`:JSP注释，被注释语句不做任何处理
 - // 、/*..*/ 用于注释<%%>java代码，被注释代码不执行
 - ` <!-- html -->`HTML注释，被注释的语句仍会被执行，不会被浏览器解释
 
-### 综合训练：质数算法
+### 2.3综合训练：质数算法
 
 - 列出1000内的质数
 - 要求1：使用List保存所有有效的质数
 - 要求2：将结果打印到页面，格式为`<h1>X是质数</h1>`
 
-### JSP页面重用
+## 3 JSP页面重用
 
 ```jsp
 <-- video.jsp  -->
@@ -1206,9 +1208,9 @@ public class FirstServlet extends HttpServlet{
 <%@include file="include/footer.jsp" %>
 ```
 
-## 自由编程
+## 4 自由编程
 
-### JSP界面
+### 4.1 JSP界面
 
 请在JSP页面中完成1-100内数字的求和运算，并将结果在浏览器中显示出来。
 
@@ -1232,7 +1234,7 @@ public class FirstServlet extends HttpServlet{
 
 
 
-### JSP界面+设置
+### 4.2 JSP界面+设置
 
 请在JSP页面中根据x的值进行判断并得出y的值，并将结果在浏览器中显示出来
 
@@ -1283,7 +1285,7 @@ public class FirstServlet extends HttpServlet{
 
 
 
-### jsp题目3
+### 4.3 jsp存list
 
 页面效果展示图：使用List存储数据，并取出显示到页面。
 
@@ -1320,3 +1322,166 @@ public class FirstServlet extends HttpServlet{
 %>
 ```
 
+# Servlet和JSP进阶
+
+## 0  课程介绍
+
+- 掌握Java Web核心特性
+- 掌握Servlet核心和对象
+- 了解九大内置对象
+
+### HTTP请求的结构
+
+- HTTP请求包含三部分：请求行、请求头、请求体
+- ![image-20220430131758071](https://s2.loli.net/2022/04/30/cTgmJGXM2PQEIbS.png)
+
+![image-20220430142747982](https://s2.loli.net/2022/04/30/o6RCGVw9rFMJtaA.png)
+
+![image-20220430142827235](https://s2.loli.net/2022/04/30/48bSLxIMREue2GC.png)
+
+![image-20220430143414263](https://s2.loli.net/2022/04/30/6ZVAoc5HzCGrmg1.png)
+
+![image-20220430143518770](https://s2.loli.net/2022/04/30/akZpJHDsWiSf9d5.png)
+
+### 巧用请求头开发多端应用
+
+```java
+//见项目sevlet_adcanced
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String userAgent = request.getHeader("User-Agent");
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().println(userAgent);
+		String output ="";
+		if(userAgent.indexOf("Windows NT") != -1) {
+			output = "<h1>这是PC端首页</h1>";
+		}else if(userAgent.indexOf("iPhone") != -1 || userAgent.indexOf("Android") != -1) {
+			output = "<h1>这是移动端首页</h1>";
+		}
+		response.getWriter().println(output);
+	}
+```
+
+### 相应的结构
+
+- HTTP相应包含三部分：相应行、相应头、相应体
+- ![image-20220430152113623](https://s2.loli.net/2022/04/30/bKVyF94hziwY5uQ.png)
+
+### HTTP常见状态码
+
+| 状态码   | 错误描述                               |
+| -------- | -------------------------------------- |
+| 200      | 服务器处理成功                         |
+| 404      | 无法找到文件                           |
+| 500      | 内部服务器错误                         |
+| 403      | 服务器拒绝访问                         |
+| 301、302 | 请求重定向                             |
+| 400      | 无效的请求                             |
+| 401      | 未经过授权                             |
+| 503      | 服务器超负载或正停机维护，无法处理请求 |
+
+- 404：路径错误，查找配置路径、网页输入url是否有错误
+- 500：去eclipse源代码查找
+  - ![image-20220430154603280](https://s2.loli.net/2022/04/30/h3NSFREqA4WOvy7.png)
+
+### ContentType的作用
+
+- ContentType决定浏览器采用何种方式对响应体进行处理
+
+| MINE类型                     | 描述           |
+| ---------------------------- | -------------- |
+| text/plain                   | 纯文本         |
+| text/html                    | HTML文档       |
+| text/xml                     | 需要下载的资源 |
+| application/x-msdownlaod     | 需要下载的资源 |
+| image/jpeg image/gif image/… | 图片资源       |
+
+### 请求转发与重定向的原理
+
+- 多个Servlet（JSP）之间跳转有两种方式
+  - request.getRequestDispatcher().forward() - 请求转发
+  - response.sendRedirect() - 响应重定向
+
+#### 请求转发
+
+- 在服务器tomcat内部将第一个servlet转到第二个servlet
+- 是服务器的跳转，只会产生一次请求
+- 转发语句：`request.getRequestDispatcher().forward()`
+- ![image-20220430203216132](https://s2.loli.net/2022/04/30/ga62wMAEDNu9RIq.png)
+
+#### 响应重定向
+
+- 将请求第一次处理完后，由浏览器重新发一个新的请求送给第二个servlet
+- 是浏览器端的跳转，回产生两次请求
+- 转发语句：`response.sendRedirect()`
+- ![image-20220430203338302](https://s2.loli.net/2022/04/30/XrTPnWZmJ7OhuBg.png)
+
+### 设置请求自定义属性
+
+- 请求是允许创建自定义属性的
+- 设置请求属性：request.setAttribute(属性名，属性值)
+- 获取请求属性：Object attr = request.getAttribute(属性名)
+
+```java
+// project：request_advanced
+// CheckLoginServlet.java
+request.setAttribute("username", "admin");
+// 若使用请求转发
+request.getRequestDispatcher("/direct/index").forward(request, response);
+// 若使用重定向
+response.sendRedirect("/servlet_advanced/direct/index");
+
+// IndexServlet,java
+String username = (String)request.getAttribute("username");
+response.getWriter().println("This is index page!current username is " + username);
+
+// output:
+// 若使用请求转发
+This is index page!current username is admin
+// 若使用重定向
+This is index page!current username is null
+// 解释：如上图，使用重定向，属性值只在servlet1中，没法传递到servlet2
+```
+
+### 浏览器Cookie
+
+- Cookie(小甜饼)是浏览器保存哎本地的文本内容
+- Cookie常用于保存登录状态、用户资料等小文本
+- Cookie具有时效性，Cookie内容会伴随请求发送给Tomcat
+
+```java
+// ImoocLoginServlet.java
+Cookie cookie = new Cookie("user","admin");
+// 设置cookie有效时间为7天
+cookie.setMaxAge(60*60*24*7);
+response.addCookie(cookie);
+response.getWriter().println("login success");
+
+// ImoocIndexServlet.java
+Cookie[]  cs = request.getCookies();
+if(cs == null) {
+    response.getWriter().println("user not login");
+    return;
+}
+String user = null;
+for(Cookie c:cs) {
+    System.out.println(c.getName() + ":" + c.getValue());
+    if(c.getName().equals("user")) {
+        user = c.getValue();
+        break;
+    }
+}	
+if(user == null){
+    response.getWriter().println("user not login");
+}else {
+    response.getWriter().println("user:" + user);
+}
+```
+
+### Session用户会话
+
+- Session(用户会话)用于保存与“浏览器窗口”对应的数据
+  - cookie存在本地，形象比喻：cookie是现金，session是银行卡/支付宝扫码 
+- Session的数据存储在Tomcat服务器的内存中，具有时效性(30min)
+- Session通过浏览器Cookie的SessionId值提取用户数据
+  - SeesionId相当于银行卡密码
