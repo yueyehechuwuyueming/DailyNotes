@@ -799,7 +799,7 @@ public class PlanReader {
 
   - B/S模式开发Web应用就是J2EE最核心的功能
 
-  - J2EE由13个功能模块成
+  - J2EE由13个功能模块组成
 
 - 13个功能模块
 
@@ -1330,10 +1330,17 @@ public class FirstServlet extends HttpServlet{
 - 掌握Servlet核心和对象
 - 了解九大内置对象
 
-### HTTP请求的结构
+## 1 Java Web核心特性
 
-- HTTP请求包含三部分：请求行、请求头、请求体
+### 1.1 HTTP请求的结构
+
+- HTTP请求包含三部分：**请求行、请求头、请求体**
 - ![image-20220430131758071](https://s2.loli.net/2022/04/30/cTgmJGXM2PQEIbS.png)
+- 习题
+  - 在一个完整的Http请求中，请求头通常都包含哪些信息
+    - 请求url
+    - Cookie内容
+
 
 ![image-20220430142747982](https://s2.loli.net/2022/04/30/o6RCGVw9rFMJtaA.png)
 
@@ -1343,7 +1350,7 @@ public class FirstServlet extends HttpServlet{
 
 ![image-20220430143518770](https://s2.loli.net/2022/04/30/akZpJHDsWiSf9d5.png)
 
-### 巧用请求头开发多端应用
+### 1.2 巧用请求头开发多端应用
 
 ```java
 //见项目sevlet_adcanced
@@ -1362,18 +1369,18 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	}
 ```
 
-### 相应的结构
+### 1.3 响应的结构
 
-- HTTP相应包含三部分：相应行、相应头、相应体
+- HTTP响应包含三部分：响应行、响应头、响应体
 - ![image-20220430152113623](https://s2.loli.net/2022/04/30/bKVyF94hziwY5uQ.png)
 
-### HTTP常见状态码
+### 1.4 HTTP常见状态码
 
 | 状态码   | 错误描述                               |
 | -------- | -------------------------------------- |
 | 200      | 服务器处理成功                         |
-| 404      | 无法找到文件                           |
-| 500      | 内部服务器错误                         |
+| 404      | **无法找到文件**                       |
+| 500      | **内部服务器错误**                     |
 | 403      | 服务器拒绝访问                         |
 | 301、302 | 请求重定向                             |
 | 400      | 无效的请求                             |
@@ -1384,7 +1391,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 - 500：去eclipse源代码查找
   - ![image-20220430154603280](https://s2.loli.net/2022/04/30/h3NSFREqA4WOvy7.png)
 
-### ContentType的作用
+### 1.5 ContentType的作用
 
 - ContentType决定浏览器采用何种方式对响应体进行处理
 
@@ -1396,11 +1403,26 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 | application/x-msdownlaod     | 需要下载的资源 |
 | image/jpeg image/gif image/… | 图片资源       |
 
-### 请求转发与重定向的原理
+## 2 请求转达和重定向
+
+### 2.1 请求转发与重定向的使用
+
+- 见下文代码
+
+### 2.2 请求转发与重定向的原理
 
 - 多个Servlet（JSP）之间跳转有两种方式
   - request.getRequestDispatcher().forward() - 请求转发
   - response.sendRedirect() - 响应重定向
+- 习题
+  - 关于转发，以下说法正确的是（AC）
+    - A 转发调用的是HttpServletRequest对象中的方法
+    - B 转发时，浏览器中的地址栏url会发生变化
+    - C 转发时浏览器只请求一次服务器
+    - D 转发调用的是HttpServletResponse对象中的方法
+
+  - 关于重定向，以下说法正确的是（BD）(选项同上)
+
 
 #### 请求转发
 
@@ -1412,11 +1434,11 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 #### 响应重定向
 
 - 将请求第一次处理完后，由浏览器重新发一个新的请求送给第二个servlet
-- 是浏览器端的跳转，回产生两次请求
+- 是浏览器端的跳转，会产生两次请求
 - 转发语句：`response.sendRedirect()`
 - ![image-20220430203338302](https://s2.loli.net/2022/04/30/XrTPnWZmJ7OhuBg.png)
 
-### 设置请求自定义属性
+### 2.3 设置请求自定义属性
 
 - 请求是允许创建自定义属性的
 - 设置请求属性：request.setAttribute(属性名，属性值)
@@ -1443,11 +1465,32 @@ This is index page!current username is null
 // 解释：如上图，使用重定向，属性值只在servlet1中，没法传递到servlet2
 ```
 
-### 浏览器Cookie
+#### 习题
+
+![image-20220502173223076](https://s2.loli.net/2022/05/02/UPR6HdMSniWO27z.png)
+
+- B
+- 一个奇怪的点，使用重定向应该是两个servlet，正常不用getServletContext情况下，返回的肯定是null，但使用getServletContext后，就可以跨越servlet获得了
+- 解释：ServletContext当成一个公用的空间，可以被所有的客户访问
+
+## 3 Servlet核心对象
+
+### 3.1 浏览器Cookie
 
 - Cookie(小甜饼)是浏览器保存哎本地的文本内容
 - Cookie常用于保存登录状态、用户资料等小文本
 - Cookie具有时效性，Cookie内容会伴随请求发送给Tomcat
+
+#### 习题
+
+- Cookie默认关闭浏览器就没有了
+  - √
+- 调用response的addCookie(Cookie cookie)方法进行cookie添加
+  - √
+- 已知cookie为Cookie的对象，cookie.setMaxAge(60*24)这条语句设置cookie的有效期为24小时
+  - ×，应设置为：`cookie.setMaxAge(60*60*24);`
+- Cookie常用于保存登录状态、用户资料等小文本
+  - √
 
 ```java
 // ImoocLoginServlet.java
@@ -1478,10 +1521,193 @@ if(user == null){
 }
 ```
 
-### Session用户会话
+### 3.2 Session用户会话
 
 - Session(用户会话)用于保存与“浏览器窗口”对应的数据
   - cookie存在本地，形象比喻：cookie是现金，session是银行卡/支付宝扫码 
 - Session的数据存储在Tomcat服务器的内存中，具有时效性(30min)
 - Session通过浏览器Cookie的SessionId值提取用户数据
   - SeesionId相当于银行卡密码
+
+#### Session的原理
+
+![image-20220501102957674](https://s2.loli.net/2022/05/01/YkvnIuchgzZPmw1.png)
+
+### 3.3 ServletContext
+
+- Servlet(Sevlet上下文对象)，是Web应用**全局**对象
+- 一个Web应用只会创建一个ServletContext对象
+- ServletContext随着Web应用启动而自动创建
+
+### 3.4 Java Web三大作用域对象
+
+- HttpServletRequest—请求对象
+  - 生命周期短，产生响应后就销毁，用完就扔
+- HttpSession—用户会话对象
+  - 生命周期大于HttpServletRequest，默认情况下为30min
+- ServletContext—web应用全局对象
+  - 生命周期最大，在web应用程序启动时被创建，程序关闭时被销毁
+
+- 建议：能使用小作用域的完成的功能，就不使用大作用域，ServletRequest使用较多
+
+## 4 Web应用的乱码
+
+- Tomcat默认使用字符集ISO-8859-1，属于西欧字符集
+- 解决乱码的核心思路是将ISO-8859-1转换为UTF-8
+- Servlet中请求与响应都需要设置UTF-8字符集
+
+```java
+//解决post中文乱码问题		
+// request.setCharacterEncoding方法用于将请求体中的字符集转换为UTF-8，get请求无请求体，自然不需要也无效
+		request.setCharacterEncoding("UTF-8");
+		// TODO Auto-generated method stub
+		String ename = request.getParameter("ename");
+		String address = request.getParameter("address");
+		System.out.println(ename + ":" + address);
+		//String utf8Ename = new String(ename.getBytes("iso-8859-1"),"utf-8");
+		//String utf8Affress = new String(address.getBytes("iso-8859-1"),"utf-8");
+		//System.out.println(utf8Ename + ":" + utf8Affress);
+
+//解决get中文乱码问题，添加URIEncoding="UTF-8"	
+<!-- 对于URIEncoding属性只需要在Tomcat7以前的版本设置，Tomcat8以后无需设置 -->
+<Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443" URIEncoding="UTF-8"/>
+    
+// 解决相应出现的乱码
+response.setContentType("text/html;charset=utf-8");
+```
+
+## 5 web.xml常用配置
+
+- 修改web应用默认首页
+  - welcome-file-list:里面存放着默认的首页地址（无需输入具体项目名）
+  
+```xml
+ <welcome-file-list>
+      <welcome-file>index.html</welcome-file>
+      <welcome-file>index.htm</welcome-file>
+      <welcome-file>index.jsp</welcome-file>
+      <welcome-file>default.html</welcome-file>
+      <welcome-file>default.htm</welcome-file>
+      <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+```
+
+- Servlet通配符映射及初始化参数
+
+```xml
+ <!-- 重点：<url-pattern>/pattern/*</url-pattern> 或 @WebServlet("/pattern/*")-->
+<servlet>
+  	<servlet-name>patternServlet</servlet-name>
+  	<servlet-class>com.cy.servlet.pattern.PatternServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>patternServlet</servlet-name>
+  	<url-pattern>/pattern/*</url-pattern>
+  </servlet-mapping>
+ <!-- 重点：context-param-->
+  <context-param>
+    <param-name>copyright</param-name>
+  	<param-value>© 2022 imooc.com  京ICP备 12003892号-22</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>title</param-name>
+  	<param-value>慕课网-程序员的梦工厂</param-value>
+  </context-param>
+```
+
+```java
+// 通配符匹配（匹配最后一个/后的数字）：PatternServlet
+		// 获取当前访问的url
+		String url = request.getRequestURL().toString();
+		System.out.println(url);
+		String id =url.substring(url.lastIndexOf("/")+1);
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.println(id);
+
+// 把copyright、title等文本参数写进xml中：ServletContextInitServlet
+		ServletContext context = request.getServletContext();
+		String copyright = context.getInitParameter("copyright");
+		context.setAttribute("copyright", copyright);
+		String title = context.getInitParameter("title");
+		context.setAttribute("title", title);
+		response.getWriter().println("init success");
+```
+
+- 设置404、500等状态码默认页面
+  - 防止报错信息暴露
+
+```xml
+  <!-- 指定错误页面 -->
+  	<error-page>
+  		<error-code>404</error-code>
+  		<location>/error/404.html</location>
+  	</error-page>
+  	<error-page>
+  		<error-code>500</error-code>
+  		<location>/error/500.html</location>
+  	</error-page>
+```
+
+### 6 JSP九大内置对象
+
+- request和out最常用
+
+![image-20220502151808670](https://s2.loli.net/2022/05/02/rkwx8UjVsQn4o6K.png)
+
+```jsp
+<body>
+	<%
+		String url = request.getRequestURL().toString(); //HttpServletRequest
+		response.getWriter().println(url); //HttpServletResponse
+	%>
+	<% 
+		out.println("<br>ABBCC"); 
+		session.setAttribute("user", "张三");
+		out.println(session.getAttribute("user"));
+	%>
+	<%
+		String cp = application.getInitParameter("copyright");//ServletContext
+		out.println("<hr/>");
+		out.println(cp);
+ 		pageContext.getRequest();
+ 		pageContext.getResponse();
+ 		pageContext.getServletContext();
+ 	%>
+</body>
+```
+
+详见：[JSP九大内置对象文档](https://ayusummer-my.sharepoint.com/:b:/g/personal/chengyue_ayusummer_onmicrosoft_com/EX20vgpo_kdMjyqftpI3mA4BKILK_TSrqhyrn2myDrBR6g?e=pojB1F)
+
+#### 例题
+
+- 以下关于exception内置对象的说法正确的是（BC）（选择两项）
+- A exception内置对象可以在任意JSP页面中使用 
+- B exception内置对象只能在错误页面中使用 
+- C exception内置对象使用时，需要在页面的page指令下增加"isErrorPage"属性 
+- D 当页面中page指令下的"isErrorPage="false""时，才可以使用exception内置对象
+
+## 7 web应用程序的打包发布
+
+- Java Web应用采用war包进行发布
+- 发布路径为：{TOMCAT_HOME}/webapps
+- Eclipse支持war包单独导出
+- （暂不需要，可看视频学习）
+
+## 8 自由编程
+
+
+
+### 题目一
+
+在文本框中输入100以内的数字，提交给Servlet进行处理，得到累加和，把结果存储到request中，再转发到另一个显示 信息的Servlet中将结果取出并显示。
+
+![image-20220502194717101](https://s2.loli.net/2022/05/02/U34jLz51GerfoAt.png)
+
+### 题目二
+
+编写代码完成如下需求： 
+
+已知如下查询页面，点击查询按钮提交给一个Servlet进行处理，在Servlet中定义一个HashMap，存储中英文单词的信 息，如apple为key值，苹果为value值，可以存储三个。然后获取JSP页面提交的参数，也就是key值，判断key值在Hash Map中是否存在，可以使用containsKey（）方法，返回值是一个boolean类型。
+
+![image-20220502194740277](https://s2.loli.net/2022/05/02/Fy7KfkHPJqhwBlG.png)
